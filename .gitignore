@@ -5,4 +5,4 @@
 !.gitignore
 
 # Allow Git to track your specific file
-!your_single_file.txt
+!README.md
