@@ -1,0 +1,85 @@
+@restapi @vehicle_inspection
+Feature: Vehicle Inspection REST API - Core CRUD Operations
+  This feature outlines the core Create, Read, Update, and Delete (CRUD) operations for vehicle inspections via the REST API.
+  It includes tests for creating new inspections, retrieving existing ones by ID or other criteria, and handling various success and failure scenarios.
+
+
+
+
+
+  @get @by_id @sunny_day
+  Scenario: Successfully retrieve a vehicle inspection by ID
+    Given the following vehicle inspections exist:
+      | vehicleinspection                                  |
+      | {"testid": 10001, "vehicle": {"model": "Corolla"}} |
+    When I send a GET request to "/api/inspections/id/10001"
+    Then the response status code should be 200
+    And the response should contain "testid": 10001
+    And the response should contain "vehicle.model": "Corolla"
+
+  @get @by_id @rainy_day
+  Scenario: Fail to retrieve a vehicle inspection by non-existent ID
+    Given the vehicle inspection with id 10001 does not exist
+    When I send a GET request to "/api/inspections/id/10001"
+    Then the response status code should be 404
+    And the response should be empty
+
+  @post @by_example @sunny_day
+  Scenario: Successfully fetch a page of result by example
+    Given the following vehicle inspections exist:
+      | vehicleinspection                                  |
+      | {"testid": 10001, "vehicle": {"model": "Corolla"}} |
+    When I send a POST request to "/api/inspections/byExample?page=0&size=10" with the payload:
+      """
+      {
+        "vehicle": {
+          "model": "Corolla"
+        }
+      }
+      """
+    Then the response status code should be 200
+    And the response should contain "content" with 1 items
+    And the response should contain "pageNumber": 0
+    And the response should contain "pageSize": 10
+
+  @get @by_model @sunny_day
+  Scenario Outline: Successfully retrieve vehicle inspections by model with pagination
+    Given the following vehicle inspections exist:
+      | vehicleinspection                                |
+      | {"testid": 10002, "vehicle": {"model": "Focus"}} |
+      | {"testid": 10004, "vehicle": {"model": "Focus"}} |
+      | {"testid": 10006, "vehicle": {"model": "Focus"}} |
+      | {"testid": 10008, "vehicle": {"model": "Focus"}} |
+    When I send a GET request to "/api/inspections/model/<model>?page=<page>&size=<size>"
+    Then the response status code should be 200
+    And the response should contain "content" with <expected_count> items
+    And the response should contain "pageNumber": <page>
+    And the response should contain "pageSize": <size>
+
+    Examples:
+      | model | page | size | expected_count |
+      | Focus | 0    | 3    | 3              |
+      | Focus | 1    | 3    | 1              |
+      | Focus | 0    | 10   | 4              |
+
+  @get @by_model @sunny_day
+  Scenario: Retrieve no vehicle inspections for a non-existent model
+    Given the following vehicle inspections do not exist:
+      | vehicleinspection                     |
+      | {"vehicle.model": "NonExistentModel"} |
+    When I send a GET request to "/api/inspections/model/NonExistentModel"
+    Then the response status code should be 200
+    And the response should contain "content" with 0 items
+    And the response should contain "pageNumber": 0
+    And the response should contain "pageSize": 10
+
+  @get @by_model @sunny_day
+  Scenario: Retrieve no vehicle inspections for a non-existent model
+    Given the following vehicle inspections do not exist:
+      | vehicleinspection                     |
+      | {"vehicle.model": "NonExistentModel"} |
+    When I send a GET request to "/api/inspections/model/NonExistentModel"
+    Then the response status code should be 200
+    And the response should contain "content" with 0 items
+    And the response should contain "pageNumber": 0
+    And the response should contain "pageSize": 10

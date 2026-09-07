@@ -1,0 +1,23 @@
+"product","subProduct","issue","subIssue","probability"
+"Checking or savings account","Checking account","Managing an account","Deposits and withdrawals",180
+"Checking or savings account","Checking account","Managing an account","Problem using a debit card",150
+"Checking or savings account","Checking account","Closing an account","Company closed account",40
+"Checking or savings account","Checking account","Opening an account","Account opened as a result of fraud",25
+"Checking or savings account","Savings account","Managing an account","Deposits and withdrawals",70
+"Checking or savings account","Savings account","Problem with a lender or other company charging your account","Transaction was not authorized",30
+"Credit card","General-purpose credit card","Problem with a purchase shown on your statement","Credit card company isn't resolving a dispute about a purchase",140
+"Credit card","General-purpose credit card","Fees or interest","Problem with fees",90
+"Credit card","General-purpose credit card","Closing your account","Company closed your account",35
+"Credit card","Store credit card","Getting a credit card","Application denied",20
+"Credit card","General-purpose credit card","Advertising and marketing, including promotional offers","Confusing or misleading advertising about the credit card",25
+"Money transfer, virtual currency, or money service","Domestic (US) money transfer","Fraud or scam","",60
+"Money transfer, virtual currency, or money service","Domestic (US) money transfer","Money was not available when promised","",35
+"Mortgage","Conventional home mortgage","Trouble during payment process","Loan servicing, payments, escrow account",90
+"Mortgage","Conventional home mortgage","Applying for a mortgage or refinancing an existing mortgage","Application denied",30
+"Mortgage","FHA mortgage","Struggling to pay mortgage","Loan modification, collection, foreclosure",20
+"Vehicle loan or lease","Loan","Managing the loan or lease","Problem with additional add-on products or services",25
+"Vehicle loan or lease","Loan","Struggling to pay your loan","Loan balance remaining after the vehicle is repossessed and sold",15
+"Debt collection","Credit card debt","Attempts to collect debt not owed","Debt was result of identity theft",30
+"Debt collection","Credit card debt","Communication tactics","Frequent or repeated calls",20
+"Credit reporting, credit repair services, or other personal consumer reports","Credit reporting","Incorrect information on your report","Account status incorrect",45
+"Personal loan","Installment loan","Struggling to pay your loan","Loan balance remaining after your vehicle is repossessed and sold",10

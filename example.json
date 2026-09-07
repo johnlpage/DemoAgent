@@ -1,0 +1,74 @@
+{
+  "complaintId": "CMP-2026-000482913",
+  "dateReceived": "2026-08-14",
+  "dateSentToCompany": "2026-08-14",
+  "product": "Checking or savings account",
+  "subProduct": "Checking account",
+  "issue": "Managing an account",
+  "subIssue": "Deposits and withdrawals",
+  "consumerComplaintNarrative": "I attempted to withdraw funds from my checking account at a branch location and was told there was a hold on my account without any prior notification. When I called customer service I was placed on hold for over 45 minutes and then disconnected. This is the third time this has happened this year.",
+  "company": "First Continental Bank",
+  "companyResponse": "Closed with explanation",
+  "companyPublicResponse": "Company chooses not to provide a public response",
+  "timelyResponse": true,
+  "consumerDisputed": false,
+  "consumerConsentProvided": "Consent provided",
+  "submittedVia": "Phone",
+  "tags": "Older American",
+  "state": "TX",
+  "zipCode": "75201",
+  "customerId": "CUST-7734921",
+  "accountType": "Checking",
+  "channel": "Branch",
+  "priority": "Medium",
+  "status": "Closed",
+  "assignedAgent": "AGT-5512",
+  "resolutionDays": 6,
+  "satisfactionScore": 2,
+  "createdAt": "2026-08-14T09:22:31Z",
+  "updatedAt": "2026-08-20T14:05:10Z",
+  "processingHistory": [
+    {
+      "eventDate": "2026-08-14T09:22:31Z",
+      "eventType": "Received",
+      "actor": "System",
+      "channel": "Phone",
+      "notes": "Complaint logged from inbound call."
+    },
+    {
+      "eventDate": "2026-08-14T11:05:00Z",
+      "eventType": "Assigned",
+      "actor": "AGT-5512",
+      "channel": "Internal",
+      "notes": "Assigned to case agent for review."
+    },
+    {
+      "eventDate": "2026-08-15T14:30:00Z",
+      "eventType": "Customer Contact",
+      "actor": "AGT-5512",
+      "channel": "Phone",
+      "notes": "Called customer to confirm details of the account hold and apologize for the disconnected call."
+    },
+    {
+      "eventDate": "2026-08-17T10:00:00Z",
+      "eventType": "Internal Escalation",
+      "actor": "AGT-5512",
+      "channel": "Internal",
+      "notes": "Escalated to fraud review team to confirm legitimacy of the hold."
+    },
+    {
+      "eventDate": "2026-08-19T16:45:00Z",
+      "eventType": "Customer Contact",
+      "actor": "AGT-5512",
+      "channel": "Email",
+      "notes": "Sent written explanation of the hold and expected release date."
+    },
+    {
+      "eventDate": "2026-08-20T14:05:10Z",
+      "eventType": "Closed",
+      "actor": "AGT-5512",
+      "channel": "Internal",
+      "notes": "Hold released, funds available. Case closed with explanation provided to customer."
+    }
+  ]
+}
