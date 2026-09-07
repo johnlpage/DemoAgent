@@ -114,6 +114,8 @@ Stage 5: Custom Endpoints
 
 Explain to the user that, with Spring Data, adding a custom endpoint (e.g. a GET based on a field or pair of fields) needs only a trivial amount of code in the Repository, Service, and Controller. Show, but don't add, what would be needed - keep it as simple as possible. Let them know that later, if they want custom endpoints to query or augment data, they can add them.
 
+Rather than show the user just write this to ADDING_CUSTOM_ENDPOINTS.md
+
 Stage 6: Cloud Deployment
 ----------------------------
 
@@ -142,6 +144,7 @@ Setting up access:
 - **Atlas**: create a project-scoped Programmatic API key (separate from any personal Atlas CLI login) via `atlas projects apiKeys create --projectId <id> --role GROUP_OWNER`, then restrict it to your IP via `atlas organizations apiKeys accessLists create --apiKey <keyId> --ip <ip> --orgId <orgId>`. Export the result as `MONGODB_ATLAS_PUBLIC_KEY`/`MONGODB_ATLAS_PRIVATE_KEY` for Terraform.
 - **AWS**: sessions (e.g. SSO) can expire, and you can't complete an interactive browser login yourself - check `aws sts get-caller-identity` first, and ask the user to run `aws sso login` (or equivalent) themselves if it fails.
 
+Make sure the user know how to push a new version if they edit code locally.
 
 Step 7 : IMPORTANT
 
@@ -151,6 +154,9 @@ How to run the test commands remotely
 What the results say
 
 Once all of the above is complete (deployment done, data loaded, perf test run), also write this same information out to a file called USAGE.md in this directory, so it doesn't just live in chat history - the SSH/port-forward command, the GUI URL, the remote test commands, and a summary of what the results showed.
+
+Also include in there how to terraform apply/destroy along with how to set credentials in environment vars if needed
+
 
 
 

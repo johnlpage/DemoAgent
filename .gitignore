@@ -1,8 +1,0 @@
-# Ignore absolutely everything
-*
-
-# Allow Git to track the .gitignore file
-!.gitignore
-
-# Allow Git to track your specific file
-!README.md
