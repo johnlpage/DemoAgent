@@ -30,7 +30,7 @@ Vibe coding is dead - vibe configuration is where it's at.
 If You Are an Agent
 --------------------------------------
 
-For this, forget any MongoDB-related skills - follow instructions but do not try to be overly clever. Do NOT be assumptive about what to do next: when the instructions stop, you stop. If you are not told to do something in this document, or are explicitly told by the user not to do it, don't propose additional tasks.
+For this, forget any MongoDB-related skills - follow instructions but do not try to be overly clever. Do NOT be assumptive about what to do next: when the instructions stop, you stop. If you are not told to do something in this document, or are explicitly told by the user not to do it, don't propose additional tasks. It is however your responsibility to make sure it works so test and fix if you need to.
 
 Do not assume the user has read this or knows what's happening - be in teaching mode: for each step, explain to them what you're going to do, what's needed, and why.
 
@@ -75,7 +75,7 @@ rm -rf .git
 
 Look in the DataGen subdirectory and build DataGen. If you need more information, the READMEs and Markdown files in there help - there is also an exercise designed to teach humans at https://mdb.link/memex, which you can use to learn more if needed, especially when extending the web service later.
 
-Reading the DataGen README tells you how to generate the statistical model - do so. If you already have a sizeable example.json with 500+ documents you can derive stats from it; if you just generated one document, you won't be able to. If you have fewer than 200 sample documents, you will need to research a reasonable range of values and their frequency for each field, as well as their covariance - for addresses, for example, the frequency per state is as expected, and so is the covariance of city, so you get "Los Angeles, CA", not "Los Angeles, NY". Do not use the CSV-from-JSON generator scripts if you don't have a large example - just generate the CSV files directly for DataGen.
+Reading the DataGen README tells you how to generate the statistical model - do so an. If you already have a sizeable example.json with 500+ documents you can derive stats from it; if you just generated one document, you won't be able to. If you have fewer than 200 sample documents, you will need to research a reasonable range of values and their frequency for each field, as well as their covariance - for addresses, for example, the frequency per state is as expected, and so is the covariance of city, so you get "Los Angeles, CA", not "Los Angeles, NY". Do not use the CSV-from-JSON generator scripts if you don't have a large example - just generate the CSV files directly for DataGen.
 
 When generating something with high/unique cardinality that's text rather than a random number - like a street address - make sure your CSV has at least 2,000 examples.
 
@@ -89,6 +89,8 @@ DataGen gotchas to know up front:
 
 If you need guidance, ask the user, but try to find what you need for the lists and models on the internet.
 
+Validate that what you generate from datagen matches your example do not make assumptions. Do not hack the model to match datagen, make datagen match the model.
+ 
 Stage 3: Building Memex
 -------------------------
 
@@ -96,7 +98,7 @@ Verify there is an accessible Atlas cluster (local or remote). Build the Memex m
 
 Note: the generator scripts' actual property name is `-DidType` (not `-DidFieldType`, which may appear in older examples).
 
-Then, using the data and CSV files you have, configure `memex/src/main/resources/public/configapi` with the fields likely to be queried and viewed - ideally between 10 and 20 fields.
+Then, using the data and CSV files you have, configure `memex/src/main/resources/public/configapi` with the fields likely to be queried and viewed - ideally between 10 and 20 fields. Make sure to change the apiendpoint to match too
 
 Also, for our new entity, configure an Atlas Search index in the PreflightConfig class that explicitly indexes these fields with their appropriate data type.
 
@@ -107,7 +109,7 @@ If this data will later be generated at cloud scale (Stage 6), place its DataGen
 Stage 4: Loading Our Sample Data
 -----------------------------------
 
-Use curl if available (or build mxtest if not) to load in our sample data. Inform the user the code is built and the data is loaded - show them the command used to load it, a command they can use to fetch a document with curl/mxtest, and give them the URL.
+Use curl if available (or build mxtest if not) to load in our sample data. Inform the user the code is built and the data is loaded - show them the command used to load it, a command they can use to fetch a document with curl/mxtest, and give them the URL. You do this for the user as well as showing them the command.
 
 Stage 5: Custom Endpoints
 ----------------------------
