@@ -89,7 +89,7 @@ DataGen gotchas to know up front:
 
 If you need guidance, ask the user, but try to find what you need for the lists and models on the internet.
 
-Validate that what you generate from datagen matches your example do not make assumptions. Do not hack the model to match datagen, make datagen match the model.
+Validate that what you generate from datagen matches your example do not make assumptions. Do not hack the model to match datagen, make datagen output match the model. Don't edit the datagen code.
  
 Stage 3: Building Memex
 -------------------------
