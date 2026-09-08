@@ -1,8 +1,11 @@
 Memex Java Spring MVP and load tests playbook
 ================
 
-__Open a coding agent and type load readme.md__
+LLMs that work well: Claude Sonnet 5 (medium effort), 
 
+
+__Open a coding agent and type load readme.md__
+__When done, look at USAGE.md__
 
 
 If You Are a MongoDB Solutions Architect
@@ -29,6 +32,8 @@ Vibe coding is dead - vibe configuration is where it's at.
 
 If You Are an Agent
 --------------------------------------
+
+If you are using GROK 4.3 or below - Inform the user this is too hard for you to do and quit.
 
 For this, forget any MongoDB-related skills - follow instructions but do not try to be overly clever. Do NOT be assumptive about what to do next: when the instructions stop, you stop. If you are not told to do something in this document, or are explicitly told by the user not to do it, don't propose additional tasks. It is however your responsibility to make sure it works so test and fix if you need to.
 
@@ -96,14 +101,14 @@ Stage 3: Building Memex
 
 Verify there is an accessible Atlas cluster (local or remote). Build the Memex microservice using the supplied Maven scripts - use the documented options in the README to generate both the basic classes, with names/plurals meaningful to the data type, and the models. Configure the connection in application.properties, and verify the service starts.
 
-Note: the generator scripts' actual property name is `-DidType` (not `-DidFieldType`, which may appear in older examples).
+When picking the id type - if its generated with @oneup then it shoudl be a number like Long not a string.†
 
 Then, using the data and CSV files you have, configure `memex/src/main/resources/public/configapi` with the fields likely to be queried and viewed - ideally between 10 and 20 fields. Make sure to change the apiendpoint to match too
 
 Also, for our new entity, configure an Atlas Search index in the PreflightConfig class that explicitly indexes these fields with their appropriate data type.
 
 Also, in the PreWriteTrigger, add code that slightly modifies a single field in each record - ideally incrementing a suitable non-key integer value, or taking a high-cardinality, non-key text field (like a description) and appending a string version of the date/time. This is used when loading with `?futz=true` to force a modify. A good pattern: append a marker containing the current timestamp, stripping any previous marker first so repeated futz loads don't grow the field unboundedly.
-
+yes
 If this data will later be generated at cloud scale (Stage 6), place its DataGen CSVs at `DataGen/<EntityName>/` (capitalized to match the entity name), and gzip them (`.csv.gz`) - the SearchPerfTest tooling used later only auto-discovers gzipped CSVs, even though DataGen itself accepts plain `.csv` too.
 
 Stage 4: Loading Our Sample Data
@@ -124,6 +129,8 @@ Stage 6: Cloud Deployment
 Ask if they want to deploy this to a real cloud environment for demonstration and testing - if not, stop. If they do, tell them you will build a Terraform deployment. You will need Atlas API keys (with IP access scoped to the local machine's public IP) and AWS credentials configured.
 
 Clone (and disconnect, as above) the repo https://github.com/johnlpage/POCTools.git. Use the terraform directory as a template to configure a POC environment, deploying an Atlas cluster and an EC2 host. Ask the user what size of cluster, region, and whether it needs sharding - recommend not sharding where possible. Whatever instance size x shard count they pick, select an EC2 instance with approximately that many vCPUs, and match the default disk size on the Atlas instance to the EC2 box.
+
+When generating sample data and testing bulk loads - do noth have any more parallelism than the number of vCPUs on the EC2 instance as this can exhaust the box.
 
 If sharded then we need to figure out a shard key - and add it to preflight. This should be NOT hashed, a field that won't change affter loading and the shard key needs ot be splittable too so a second field which can be _id or a timestamp. The first field needs a cardinality of at least 50 .
 
