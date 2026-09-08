@@ -1,7 +1,7 @@
 Memex Java Spring MVP and load tests playbook
 ================
 
-LLMs that work well: Claude Sonnet 5 (medium effort), 
+LLMs that work well: Claude Sonnet 5 (medium effort), FW GLM 5.3, GPT 5.6 Terra
 
 
 __Open a coding agent and type load readme.md__
@@ -15,6 +15,8 @@ If you are not a Solutions Architect at MongoDB then you likely don't need this 
 
 You don't need to read much - that's the point - but you will need to answer a few questions, and your agentic buddy will explain what's happening as it goes along.
 
+You will want Atlas API keys and AWS Credentials if you want to deploy to cloud, so so an aws sso login and grab API keys for atlas now (or setup the atlas cli - that's the simplest way)
+
 Crucially, this document guides a coding agent (like OpenCode, Claude, or Codex) in how to build a Minimum Viable Product (MVP) foundation for a custome using Memex, not a disposable POC or POV demo.
 
 Memex (MongoDB Enterprise Microservice Examples) generates a fully working, near-production-ready Spring Boot application. It is not throwaway code; it is a robust architectural foundation that the customer can keep and build upon. Once generated, it simply needs to be integrated with their enterprise Security and "configured" the way standard Spring apps are, with their specific custom endpoints.
@@ -26,6 +28,8 @@ Another tenet of enterprise systems is that the less code you write, and the mor
 Memex takes this one stage further by giving you a ready-to-run instance of that archetypal MongoDB service: fast data ingestion, data validation and history storage, query interfaces with guardrails, and much more - all with a configure-don't-code mindset. Although configuration in Spring still means writing some boilerplate - for example, to define the data types stored - Memex comes with scripts to automate that.
 
 Using this runbook gives you an almost hands-off way to generate large quantities of appropriate sample data, output a solid MVP foundation for near-production-ready web services, and deploy locally or to AWS to performance-test it all. You write little to no code, and what coding there is, is agentically driven.
+
+
 
 Vibe coding is dead - vibe configuration is where it's at.
 
@@ -126,11 +130,15 @@ Rather than show the user just write this to ADDING_CUSTOM_ENDPOINTS.md
 Stage 6: Cloud Deployment
 ----------------------------
 
+Before Cloud deployment have the user  confirm that the GUI is working on a local deployment and they can see resutls in the grid OK. Give them the UDL and tell them to press the find button
+
 Ask if they want to deploy this to a real cloud environment for demonstration and testing - if not, stop. If they do, tell them you will build a Terraform deployment. You will need Atlas API keys (with IP access scoped to the local machine's public IP) and AWS credentials configured.
 
 Clone (and disconnect, as above) the repo https://github.com/johnlpage/POCTools.git. Use the terraform directory as a template to configure a POC environment, deploying an Atlas cluster and an EC2 host. Ask the user what size of cluster, region, and whether it needs sharding - recommend not sharding where possible. Whatever instance size x shard count they pick, select an EC2 instance with approximately that many vCPUs, and match the default disk size on the Atlas instance to the EC2 box.
 
-When generating sample data and testing bulk loads - do noth have any more parallelism than the number of vCPUs on the EC2 instance as this can exhaust the box.
+When generating sample data and testing bulk loads - do not have any more parallelism than the number of vCPUs on the EC2 instance as this can exhaust the box. A good ratio is a total data volume of 6X the database Cache ( cache is 25% fo RAM on M30 and 50% on larger atlas instances)
+
+Its important to validate with the user the total number of docum,ents and the data size that is and when reporting the perforamance results to include the docs/s or mb/s
 
 If sharded then we need to figure out a shard key - and add it to preflight. This should be NOT hashed, a field that won't change affter loading and the shard key needs ot be splittable too so a second field which can be _id or a timestamp. The first field needs a cardinality of at least 50 .
 
