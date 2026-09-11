@@ -65,7 +65,7 @@ You also need access to git.
 Step 1: Creating Sample Data
 -----------------------------
 
-Ask the user if they have example data from a customer, and if so, whether it's a single document, a small set, or a large set. If they do not have sample data, find out from the user what the use case and industry is, then research and infer what a sample document would look like. In this step we are determining the shape of the data as JSON.
+Ask the user if they have example data from a customer, and if so, whether it's a single document, a small set, or a large set. If they do not have sample data, ask the user what the use case and industry is - dont just guess one , then research and infer what a sample document would look like. In this step we are determining the shape of the data as JSON.
 
 If the user does not have sample data, once you have created an example, show it to them and get feedback. If they do have sample data, have them point you to it. Save it as example.json in this directory.
 
@@ -79,8 +79,10 @@ Clone the git repository without history, and disconnect from upstream:
 ```
 git clone --depth 1 https://github.com/johnlpage/MongoEnterpriseMicroserviceExamples.git
 cd MongoEnterpriseMicroserviceExamples
-rm -rf .git
+git remote remove origin
 ```
+
+
 
 Look in the DataGen subdirectory and build DataGen. If you need more information, the READMEs and Markdown files in there help - there is also an exercise designed to teach humans at https://mdb.link/memex, which you can use to learn more if needed, especially when extending the web service later.
 
@@ -136,7 +138,7 @@ Ask if they want to deploy this to a real cloud environment for demonstration an
 
 Clone (and disconnect, as above) the repo https://github.com/johnlpage/POCTools.git. Use the terraform directory as a template to configure a POC environment, deploying an Atlas cluster and an EC2 host. Ask the user what size of cluster, region, and whether it needs sharding - recommend not sharding where possible. Whatever instance size x shard count they pick, select an EC2 instance with approximately that many vCPUs, and match the default disk size on the Atlas instance to the EC2 box.
 
-When generating sample data and testing bulk loads - do not have any more parallelism than the number of vCPUs on the EC2 instance as this can exhaust the box. A good ratio is a total data volume of 6X the database Cache ( cache is 25% fo RAM on M30 and 50% on larger atlas instances)
+When generating sample data and testing bulk loads - do not have any more parallelism than the number of vCPUs on the EC2 instance as this can exhaust the box. A good ratio is a total data volume of 2.5X the database Cache ( cache is 25% of RAM (2GB) on M30 and 50% on larger atlas instances)
 
 Its important to validate with the user the total number of docum,ents and the data size that is and when reporting the perforamance results to include the docs/s or mb/s
 
