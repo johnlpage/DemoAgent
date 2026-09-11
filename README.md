@@ -1,7 +1,8 @@
 Memex Java Spring MVP and load tests playbook
 ================
 
-LLMs that work well: Claude Sonnet 5 (medium effort), FW GLM 5.3, GPT 5.6 Terra
+Works with: Opencode, Cursor, Copilot
+LLMs that work well: Claude Sonnet 5 (medium effort), FW GLM 5.3, GPT 5.6 Terra,  Deepseek V4 flash
 
 
 __Open a coding agent and type load readme.md__
