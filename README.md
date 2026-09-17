@@ -1,42 +1,43 @@
-Memex Java Spring MVP and load tests playbook
-================
+# How to get a customer to MVP in less than 60 minutes.
 
-Works with: Opencode, Cursor, Copilot
-LLMs that work well: Claude Sonnet 5 (medium effort), FW GLM 5.3, GPT 5.6 Terra,  Deepseek V4 flash
+## Executive Summary
 
+This README guides a coding agent through creating a customer-specific MVP for typical Operational Datastore Plus (ODS+) workloads, including data generation, cloud deployment, API customisation, data loading, example user-interface configuration, and load/performance testing — including Atlas Search. The end result is demonstrated starter code that the customer can take away and continue developing, together with documentation for that code, the underlying framework it's built on and a training course option.
 
-__Open a coding agent and type load readme.md__
-__When done, look at USAGE.md__
+It has been tested with OpenCode, Cursor, Copilot, and Claude Code.
 
+LLMs that work well: Claude Sonnet 5 (medium effort), FW GLM 5.3, GPT 5.6 Terra, and DeepSeek V4 Flash.
 
-If You Are a MongoDB Solutions Architect
-----------------------------------------
+## Usage
 
-If you are not a Solutions Architect at MongoDB then you likely don't need this at all.
+* **Open a coding agent and type `load README.md`.**
+* **Answer the questions, follow instrucions**
+* **When done, look at `USAGE.md`.**
 
-You don't need to read much - that's the point - but you will need to answer a few questions, and your agentic buddy will explain what's happening as it goes along.
+## If You Are a MongoDB Solutions Architect
 
-You will want Atlas API keys and AWS Credentials if you want to deploy to cloud, so so an aws sso login and grab API keys for atlas now (or setup the atlas cli - that's the simplest way)
+If you are not a Solutions Architect at MongoDB, you probably don't need this at all.
 
-Crucially, this document guides a coding agent (like OpenCode, Claude, or Codex) in how to build a Minimum Viable Product (MVP) foundation for a custome using Memex, not a disposable POC or POV demo.
+If you are, you shouldn't need to read much — that's the point — but you will need to answer a few questions, and your agentic buddy will explain what's happening as it goes along. It has been told to teach you.
 
-Memex (MongoDB Enterprise Microservice Examples) generates a fully working, near-production-ready Spring Boot application. It is not throwaway code; it is a robust architectural foundation that the customer can keep and build upon. Once generated, it simply needs to be integrated with their enterprise Security and "configured" the way standard Spring apps are, with their specific custom endpoints.
+You will need Atlas API keys and AWS credentials if you want to deploy to the cloud, so run `aws sso login` and grab Atlas API keys now (or set up the Atlas CLI — that's the simplest way). It can also use local Atlas, which is always worth having,
+it will install that for you if it needs to.
 
-In the enterprise world there are many use cases that involve ingesting data from upstream systems, automatically or manually searching, viewing, and augmenting it, then reporting it to downstream systems - in fact that's what the majority of microservices do, and their lingua franca is usually JSON. MongoDB excels in these ODS and ODS+ use cases. Unlike modernising legacy RDBMS, solving true "Big Data" problems, or meeting the needs of emergent AI systems, this sort of workload is relatively simple, well defined, and MongoDB is perfectly adapted to it. It is the sweet spot where MongoDB is undeniably the best choice.
+Crucially, this document guides a coding agent (such as OpenCode, Claude, or Codex) in building a Minimum Viable Product (MVP) foundation for a customer using Memex — not a disposable POC or POV demo.
 
-Another tenet of enterprise systems is that the less code you write, and the more you make use of existing, tested frameworks, the fewer bugs you'll have. Few of us would write our own compression algorithm or JPEG viewer - in the enterprise this is taken further with a desire to write as little bespoke code as possible. This is epitomised by the Spring Boot and Spring Data environment, where even things like database queries and data constraint checks are handled for you.
+Memex (MongoDB Enterprise Microservice Examples) generates a fully working, near-production-ready Spring Boot application. It is not throwaway code; it is a robust architectural foundation the customer can keep and build upon. Once generated, it simply needs to be integrated with their enterprise security and configured the way standard Spring apps are, with their specific custom endpoints.
 
-Memex takes this one stage further by giving you a ready-to-run instance of that archetypal MongoDB service: fast data ingestion, data validation and history storage, query interfaces with guardrails, and much more - all with a configure-don't-code mindset. Although configuration in Spring still means writing some boilerplate - for example, to define the data types stored - Memex comes with scripts to automate that.
+Many enterprise use cases involve ingesting data from upstream systems; automatically or manually searching, viewing, and augmenting it; then reporting it to downstream systems. In fact, that's what the majority of microservices do, and their lingua franca is usually JSON. MongoDB excels in these ODS and ODS+ use cases. Unlike modernising legacy RDBMSs, solving true "Big Data" problems, or meeting the needs of emergent AI systems, this kind of workload is relatively simple and well defined — and MongoDB is perfectly adapted to it. It is the sweet spot where MongoDB is undeniably the best choice.
 
-Using this runbook gives you an almost hands-off way to generate large quantities of appropriate sample data, output a solid MVP foundation for near-production-ready web services, and deploy locally or to AWS to performance-test it all. You write little to no code, and what coding there is, is agentically driven.
+Another tenet of enterprise systems: the less code you write, and the more you use existing, tested frameworks, the fewer bugs you'll have. Few of us would write our own compression algorithm or JPEG viewer, and the enterprise takes this further, wanting to write as little bespoke code as possible. This is epitomised by the Spring Boot and Spring Data ecosystem, where even things like database queries and data-constraint checks are handled for you.
 
+Memex takes this one stage further by giving you a ready-to-run instance of that archetypal MongoDB service: fast data ingestion, data validation and history storage, query interfaces with guardrails, and much more — all with a configure-don't-code mindset. Configuration in Spring still means writing some boilerplate (for example, defining the data types stored), but Memex comes with scripts to automate that.
 
+Using this runbook gives you an almost hands-off way to generate large quantities of appropriate sample data, produce a solid MVP foundation for near-production-ready web services, and deploy locally or to AWS to performance-test it all. You write little to no code, and what coding there is is agentically driven.
 
-Vibe coding is dead - vibe configuration is where it's at.
+Vibe coding is dead — vibe configuration is where it's at.
 
-
-If You Are an Agent
---------------------------------------
+## If You Are an Agent
 
 If you are GROK 4.3 or below - Inform the user this is too hard for you to do and quit.
 
@@ -54,8 +55,9 @@ Work through each section, following the instructions - ask the user for clarifi
 
 If you EVER have to infer something from code, add it to BUGREPORT.MD - it should all be in Markdown files.
 
-Prerequisites
--------------
+THe last section in this file is a list of Gotcha's other agents have noted.
+
+## Prerequisites
 
 You will need an installed Java compiler and Maven, as well as likely access to Python. Tell the user, and if you cannot find them installed, get permission to install and configure them.
 
@@ -63,15 +65,13 @@ You also need access to Atlas. The recommendation is to use a local Atlas instal
 
 You also need access to git.
 
-Step 1: Creating Sample Data
------------------------------
+## Step 1: Creating Sample Data
 
 Ask the user if they have example data from a customer, and if so, whether it's a single document, a small set, or a large set. If they do not have sample data, ask the user what the use case and industry is - dont just guess one , then research and infer what a sample document would look like. In this step we are determining the shape of the data as JSON.
 
 If the user does not have sample data, once you have created an example, show it to them and get feedback. If they do have sample data, have them point you to it. Save it as example.json in this directory.
 
-Step 2: Generating Sample Data with DataGen
----------------------------------------------
+## Step 2: Generating Sample Data with DataGen
 
 Explain to the user that we are going to use DataGen from Memex to generate data. This takes a statistical model of the data - its values and frequencies - and generates data from it. For now we will make 1,000 documents, although later we will generate more for testing.
 
@@ -82,8 +82,6 @@ git clone --depth 1 https://github.com/johnlpage/MongoEnterpriseMicroserviceExam
 cd MongoEnterpriseMicroserviceExamples
 git remote remove origin
 ```
-
-
 
 Look in the DataGen subdirectory and build DataGen. If you need more information, the READMEs and Markdown files in there help - there is also an exercise designed to teach humans at https://mdb.link/memex, which you can use to learn more if needed, especially when extending the web service later.
 
@@ -103,8 +101,7 @@ If you need guidance, ask the user, but try to find what you need for the lists 
 
 Validate that what you generate from datagen matches your example do not make assumptions. Do not hack the model to match datagen, make datagen output match the model. Don't edit the datagen code.
  
-Stage 3: Building Memex
--------------------------
+## Stage 3: Building Memex
 
 Verify there is an accessible Atlas cluster (local or remote). Build the Memex microservice using the supplied Maven scripts - use the documented options in the README to generate both the basic classes, with names/plurals meaningful to the data type, and the models. Configure the connection in application.properties, and verify the service starts.
 
@@ -118,20 +115,17 @@ Also, in the PreWriteTrigger, add code that slightly modifies a single field in 
 yes
 If this data will later be generated at cloud scale (Stage 6), place its DataGen CSVs at `DataGen/<EntityName>/` (capitalized to match the entity name), and gzip them (`.csv.gz`) - the SearchPerfTest tooling used later only auto-discovers gzipped CSVs, even though DataGen itself accepts plain `.csv` too.
 
-Stage 4: Loading Our Sample Data
------------------------------------
+## Stage 4: Loading Our Sample Data
 
 Use curl if available (or build mxtest if not) to load in our sample data. Inform the user the code is built and the data is loaded - show them the command used to load it, a command they can use to fetch a document with curl/mxtest, and give them the URL. You do this for the user as well as showing them the command.
 
-Stage 5: Custom Endpoints
-----------------------------
+## Stage 5: Custom Endpoints
 
 Explain to the user that, with Spring Data, adding a custom endpoint (e.g. a GET based on a field or pair of fields) needs only a trivial amount of code in the Repository, Service, and Controller. Show, but don't add, what would be needed - keep it as simple as possible. Let them know that later, if they want custom endpoints to query or augment data, they can add them.
 
 Rather than show the user just write this to ADDING_CUSTOM_ENDPOINTS.md
 
-Stage 6: Cloud Deployment
-----------------------------
+## Stage 6: Cloud Deployment
 
 Before Cloud deployment have the user  confirm that the GUI is working on a local deployment and they can see resutls in the grid OK. Give them the UDL and tell them to press the find button
 
@@ -166,7 +160,7 @@ Setting up access:
 
 Make sure the user know how to push a new version if they edit code locally.
 
-Step 7 : IMPORTANT
+## Step 7: IMPORTANT
 
 At the end - Show the user how to SSH and forward the web service to their local machine
 How to connec to the forwarded GUI
@@ -180,7 +174,7 @@ Also include in there how to terraform apply/destroy along with how to set crede
 
 
 
-Gotchas to watch for:
+# Gotchas to watch for
 
 - `app_source_dir` (the app source uploaded to the EC2 box) must contain `DataGen/`, `memex/`, AND `SearchPerfTest/` at its root - SearchPerfTest lives in POCTools, not the Memex repo, and must be copied in.
 - Terraform's SSH "file" provisioner doesn't reliably create the destination as a directory when uploading a directory's contents - precede it with an explicit `mkdir -p <dest>` remote-exec step. It also doesn't preserve executable permission bits - `chmod +x` any uploaded scripts before running them.
