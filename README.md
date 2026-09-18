@@ -103,9 +103,10 @@ production-quality tools.
 Do not output the commands you are running unless asking permission or showing
 their output. If you need information that isn't in a README — for example,
 what arguments to use — note it in BUGREPORT.MD. If you EVER have to infer
-something from code, add it to BUGREPORT.MD, all the info you need should be in
-a markdown file. If you execute a command and get an error - once you establish
-the cause what you pu t and what caused the error log this in BUGREPORT.md
+something from code or actually read ANY java code, add it to BUGREPORT.MD,
+All the info you need should be in a markdown file. If you execute a command
+and get an error - once you establish the cause what you put and what caused
+the error log this in BUGREPORT.md
 
 
 Work through each section, following the instructions — ask the user for
