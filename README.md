@@ -222,7 +222,9 @@ endpoint to match, too.
 Also, for our new entity, configure an Atlas Search index in the PreflightConfig
 class that explicitly indexes these fields with their appropriate data types.
 Verify its working for arrays of objects and scalars if you have them. Do not
-add extra fields just to aid indexing make Atlas search do the work.
+add extra fields just to aid indexing make Atlas search do the work. The sample UI 
+queries string fields with text so index them that way not as token even if its a
+limited set of values.
 
 Also, in the PreWriteTrigger, add code that slightly modifies a single field in
 each record — ideally incrementing a suitable non-key integer value, or taking
