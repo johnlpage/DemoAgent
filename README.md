@@ -10,9 +10,9 @@ result is demonstrated starter code that the customer can take away and continue
 developing, together with documentation for that code, the underlying framework
 it's built on, and a training-course option.
 
-It has been tested with OpenCode, Cursor, Copilot, and Claude Code.
+It has been tested with OpenCode, Copilot, and Claude Code.
 
-LLMs that work well: Claude Sonnet 5 (medium effort), FW GLM 5.3, GPT 5.6 Terra,
+LLMs that work well: Claude Sonnet 5, FW GLM 5.3, GPT 5.6 Luna,
 and DeepSeek V4 Flash.
 
 ## Usage
@@ -143,6 +143,41 @@ If the user does not have sample data, once you have created an example, show it
 to them and get feedback. If they do have sample data, have them point you to
 it. Save it as example.json in this directory.
 
+### Data realism and variation requirements
+
+Generated data must be realistic and varied, especially for fields exposed
+through the UI, MongoDB queries, or Atlas Search. Do not hard-code one
+representative value for searchable or queryable fields such as state, city,
+specialty, status, diagnosis code, procedure code, plan type, provider, or
+description.
+
+Before generating data:
+
+- Identify every field that will be displayed, filtered, sorted, or searched.
+- Give each categorical field a realistic weighted distribution with multiple
+  values. Do not create a CSV containing only one row unless the field is
+  intentionally constant.
+- Use enough distinct values for high-cardinality searchable text. Names,
+  addresses, descriptions, claim references, provider identifiers, and similar
+  fields should not repeat for every document; use at least 2,000 realistic
+  values where appropriate.
+- Preserve realistic correlations by putting related fields in the same
+  weighted CSV row or object. For example, state, city, postal prefix, and
+  provider region must agree; plan type and plan identifier must agree; provider
+  specialty and procedure mix should be plausible.
+- Use `@ONEUP`, `@DATE`, `@DATETIME`, `@INTEGER`, and `@DOUBLE` for values that
+  should vary per document. Use weighted CSV rows for categorical variation.
+- Use `@JSON(...)` only for genuinely fixed objects or as one alternative among
+  multiple weighted object rows. Never use a single fixed `@JSON` object for a
+  field that users will search or analyze.
+- Do not make all documents share the same searchable text, provider,
+  diagnosis, procedure, location, status, or financial values merely because
+  one example document contains those values.
+The approved example document defines the schema, not the values for every
+generated document. Fixed values from the example must be converted into
+realistic distributions unless they are true constants, such as currency,
+country, data classification, or a system name.
+
 ## Step 2: Generating Sample Data with DataGen
 
 Explain to the user that we are going to use DataGen from Memex to generate
@@ -187,6 +222,10 @@ DataGen gotchas to know up front:
   expanded inside them, so you can't get per-document randomized values (e.g.
   geo coordinates) via `@JSON`. Use one fixed representative value per grouping
   instead (e.g. one lat/lon per city).
+- A single `@JSON(...)` row produces the same object in every generated
+  document. This is unsuitable for searchable or queryable fields. For those
+  fields, provide multiple weighted `@JSON(...)` rows, or generate the object
+  from varied CSV fields. Validate distinct values after generation.
 - There is no string concatenation — composite strings (e.g. street addresses)
   must be complete literal values in the CSV, not built from parts.
 - `@DATE`/`@DATETIME` only ever emit a date, `YYYY-MM-DD` — never a time
